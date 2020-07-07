@@ -1,9 +1,14 @@
 package com.sasadara.gradingapplication.restfuladapter.teacher;
 
 import com.sasadara.gradingapplication.ports.primary.usecase.CommandUseCase;
+import com.sasadara.gradingapplication.ports.primary.usecase.FunctionUseCase;
 import com.sasadara.gradingapplication.ports.primary.usecase.factory.TeacherUseCaseFactory;
+import com.sasadara.gradingapplication.ports.primary.usecase.request.student.GetStudentDetailsRequest;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.teacher.AddTeacherDetailsRequest;
+import com.sasadara.gradingapplication.ports.primary.usecase.request.teacher.GetTeacherDetailsRequest;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.teacher.UpdateTeacherDetailsRequest;
+import com.sasadara.gradingapplication.ports.primary.usecase.response.student.GetStudentDetailsResponse;
+import com.sasadara.gradingapplication.ports.primary.usecase.response.teacher.GetTeacherDetailsResponse;
 import com.sasadara.gradingapplication.restfuladapter.response.ResponseWrapper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +30,18 @@ public class TeacherController {
     @Autowired
     public TeacherController(TeacherUseCaseFactory teacherUseCaseFactory) {
         this.teacherUseCaseFactory = teacherUseCaseFactory;
+    }
+
+    @GetMapping
+    public ResponseEntity<ResponseWrapper<GetTeacherDetailsResponse>> getTeacher(@Valid @RequestParam Long teacherId) {
+        LOGGER.info("Get Object request received. Student ID: {}", teacherId);
+        FunctionUseCase<GetTeacherDetailsRequest, GetTeacherDetailsResponse> useCase
+                = teacherUseCaseFactory.getTeacherDetailsUseCase();
+
+        GetTeacherDetailsRequest request = new GetTeacherDetailsRequest(teacherId);
+        GetTeacherDetailsResponse response = useCase.execute(request);
+
+        return new ResponseEntity<>(new ResponseWrapper<>(response), HttpStatus.OK);
     }
 
     @PostMapping
