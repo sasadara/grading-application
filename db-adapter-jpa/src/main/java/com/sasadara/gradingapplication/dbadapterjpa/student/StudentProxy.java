@@ -1,13 +1,15 @@
 package com.sasadara.gradingapplication.dbadapterjpa.student;
 
-import com.sasadara.gradingapplication.dbadapterjpa.proxy.Proxy;
-import com.sasadara.gradingapplication.entities.assignment.Assignment;
-import com.sasadara.gradingapplication.entities.student.Student;
 import com.sasadara.gradingapplication.dbadapterjpa.assignment.AssignmentProxy;
 import com.sasadara.gradingapplication.dbadapterjpa.assignment.JPAAssignment;
 import com.sasadara.gradingapplication.dbadapterjpa.proxy.AutoBindProxy;
+import com.sasadara.gradingapplication.dbadapterjpa.proxy.Proxy;
 import com.sasadara.gradingapplication.dbadapterjpa.proxy.ProxyFactory;
 import com.sasadara.gradingapplication.dbadapterjpa.question.JPAQuestion;
+import com.sasadara.gradingapplication.dbadapterjpa.teacher.TeacherProxy;
+import com.sasadara.gradingapplication.entities.assignment.Assignment;
+import com.sasadara.gradingapplication.entities.student.Student;
+import com.sasadara.gradingapplication.entities.teacher.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
@@ -46,6 +48,16 @@ public class StudentProxy extends Student implements Proxy<JPAStudent> {
         return jpaStudent.getJpaAssignments().stream()
                 .map(this::getAssignmentJPAForm)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Teacher getTeacher() {
+        return proxyFactory.create(TeacherProxy.class, jpaStudent.getJpaTeacher());
+    }
+
+    @Override
+    public void updateTeacher(Teacher teacher) {
+        jpaStudent.setJpaTeacher(((TeacherProxy) teacher).getJPAObject());
     }
 
     public Assignment getAssignmentJPAForm(JPAAssignment jpaAssignment) {

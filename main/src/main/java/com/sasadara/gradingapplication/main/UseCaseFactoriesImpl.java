@@ -5,11 +5,11 @@ import com.sasadara.gradingapplication.interactors.usecases.assignment.UpdateAss
 import com.sasadara.gradingapplication.interactors.usecases.question.AddQuestionUseCase;
 import com.sasadara.gradingapplication.interactors.usecases.question.UpdateQuestionUseCase;
 import com.sasadara.gradingapplication.interactors.usecases.student.AddStudentUseCase;
+import com.sasadara.gradingapplication.interactors.usecases.student.GetStudentUseCase;
 import com.sasadara.gradingapplication.interactors.usecases.student.UpdateStudentUseCase;
 import com.sasadara.gradingapplication.interactors.usecases.teacher.AddTeacherUseCase;
+import com.sasadara.gradingapplication.interactors.usecases.teacher.GetTeacherUseCase;
 import com.sasadara.gradingapplication.interactors.usecases.teacher.UpdateTeacherUseCase;
-import com.sasadara.gradingapplication.ports.secondary.datastore.DataStore;
-import com.sasadara.gradingapplication.ports.secondary.datastore.EntityFactory;
 import com.sasadara.gradingapplication.ports.primary.usecase.CommandUseCase;
 import com.sasadara.gradingapplication.ports.primary.usecase.FunctionUseCase;
 import com.sasadara.gradingapplication.ports.primary.usecase.UseCaseFactories;
@@ -25,6 +25,8 @@ import com.sasadara.gradingapplication.ports.primary.usecase.request.teacher.Get
 import com.sasadara.gradingapplication.ports.primary.usecase.request.teacher.UpdateTeacherDetailsRequest;
 import com.sasadara.gradingapplication.ports.primary.usecase.response.student.GetStudentDetailsResponse;
 import com.sasadara.gradingapplication.ports.primary.usecase.response.teacher.GetTeacherDetailsResponse;
+import com.sasadara.gradingapplication.ports.secondary.datastore.DataStore;
+import com.sasadara.gradingapplication.ports.secondary.datastore.EntityFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -50,7 +52,7 @@ public class UseCaseFactoriesImpl implements UseCaseFactories {
 
     @Override
     public CommandUseCase<AddAssignmentRequest> addAssignmentUseCase() {
-        return new AddAssignmentUseCase(dataStore.assignmentGateway(), dataStore.questionGateway(), entityFactory,
+        return new AddAssignmentUseCase(dataStore.assignmentGateway(), dataStore.studentGateway(), entityFactory,
                 dataStore.transactionalRunner());
     }
 
@@ -61,12 +63,13 @@ public class UseCaseFactoriesImpl implements UseCaseFactories {
 
     @Override
     public CommandUseCase<AddQuestionRequest> addQuestionUseCase() {
-        return new AddQuestionUseCase(dataStore.questionGateway(), entityFactory, dataStore.transactionalRunner());
+        return new AddQuestionUseCase(dataStore.questionGateway(), dataStore.assignmentGateway(),
+                entityFactory, dataStore.transactionalRunner());
     }
 
     @Override
     public CommandUseCase<AddStudentDetailsRequest> addStudentDetailsUseCase() {
-        return new AddStudentUseCase(dataStore.studentGateway(), dataStore.assignmentGateway(),
+        return new AddStudentUseCase(dataStore.studentGateway(), dataStore.teacherGateway(),
                 entityFactory, dataStore.transactionalRunner());
     }
 
@@ -78,7 +81,7 @@ public class UseCaseFactoriesImpl implements UseCaseFactories {
 
     @Override
     public CommandUseCase<AddTeacherDetailsRequest> addTeacherDetailsUseCase() {
-        return new AddTeacherUseCase(dataStore.teacherGateway(), dataStore.studentGateway(), entityFactory,
+        return new AddTeacherUseCase(dataStore.teacherGateway(), entityFactory,
                 dataStore.transactionalRunner());
     }
 
@@ -90,12 +93,12 @@ public class UseCaseFactoriesImpl implements UseCaseFactories {
 
     @Override
     public FunctionUseCase<GetTeacherDetailsRequest, GetTeacherDetailsResponse> getTeacherDetailsUseCase() {
-        return null;
+        return new GetTeacherUseCase(dataStore.teacherGateway(), dataStore.transactionalRunner());
     }
 
     @Override
     public FunctionUseCase<GetStudentDetailsRequest, GetStudentDetailsResponse> getStudentDetailsUseCase() {
-        return null;
+        return new GetStudentUseCase(dataStore.studentGateway(), dataStore.transactionalRunner());
     }
 
 

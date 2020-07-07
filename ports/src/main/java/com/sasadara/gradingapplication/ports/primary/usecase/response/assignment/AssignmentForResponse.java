@@ -7,10 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class AssignmentForResponse implements Response {
-    private QuestionForResponse questions;
+    private List<QuestionForResponse> questions;
 }

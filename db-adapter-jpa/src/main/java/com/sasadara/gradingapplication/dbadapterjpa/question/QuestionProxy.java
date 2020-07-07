@@ -1,18 +1,28 @@
 package com.sasadara.gradingapplication.dbadapterjpa.question;
 
 
+import com.sasadara.gradingapplication.dbadapterjpa.assignment.AssignmentProxy;
 import com.sasadara.gradingapplication.dbadapterjpa.proxy.AutoBindProxy;
 import com.sasadara.gradingapplication.dbadapterjpa.proxy.Proxy;
+import com.sasadara.gradingapplication.dbadapterjpa.proxy.ProxyFactory;
+import com.sasadara.gradingapplication.entities.assignment.Assignment;
 import com.sasadara.gradingapplication.entities.question.Question;
 import com.sasadara.gradingapplication.entities.question.Results;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @AutoBindProxy(JPAQuestion.class)
 public class QuestionProxy extends Question implements Proxy<JPAQuestion> {
 
     private JPAQuestion jpaQuestion;
+    private ProxyFactory proxyFactory;
 
     public QuestionProxy(JPAQuestion jpaQuestion) {
         this.jpaQuestion = jpaQuestion;
+    }
+
+    @Autowired
+    public void setProxyFactory(ProxyFactory proxyFactory) {
+        this.proxyFactory = proxyFactory;
     }
 
     @Override
@@ -38,6 +48,16 @@ public class QuestionProxy extends Question implements Proxy<JPAQuestion> {
     @Override
     public void updateName(String name) {
         jpaQuestion.setName(name);
+    }
+
+    @Override
+    public Assignment getAssignment() {
+        return proxyFactory.create(AssignmentProxy.class, jpaQuestion.getJpaAssignment());
+    }
+
+    @Override
+    public void updateAssignment(Assignment assignment) {
+        jpaQuestion.setJpaAssignment(((AssignmentProxy) assignment).getJPAObject());
     }
 
     @Override

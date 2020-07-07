@@ -1,6 +1,7 @@
 package com.sasadara.gradingapplication.entities.assignment;
 
 import com.sasadara.gradingapplication.entities.question.Question;
+import com.sasadara.gradingapplication.entities.student.Student;
 
 import java.util.List;
 
@@ -8,12 +9,19 @@ public abstract class Assignment {
 
     protected String name;
     protected List<Question> questions;
+    protected Student student;
 
     public String getName() {
         return name;
     }
 
     public abstract void updateName(String name);
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public abstract void updateStudent(Student student);
 
     public List<Question> getQuestions() {
         return questions;

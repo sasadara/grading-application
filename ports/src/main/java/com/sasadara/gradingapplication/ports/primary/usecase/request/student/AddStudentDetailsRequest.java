@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
 
 @Getter
 @Setter
@@ -18,5 +17,5 @@ public class AddStudentDetailsRequest implements Request {
     @NotEmpty
     private String name;
 
-    private List<Long> assignments;
+    private Long teacher;
 }

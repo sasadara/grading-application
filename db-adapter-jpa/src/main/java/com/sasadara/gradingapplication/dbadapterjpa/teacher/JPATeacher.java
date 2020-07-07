@@ -21,20 +21,14 @@ import java.util.List;
 @AllArgsConstructor
 public class JPATeacher implements Serializable {
 
-    private static final long serialVersionUID = -9186052289159717453L;
+    private static final long serialVersionUID = 4663944136223439772L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column
     private String name;
-
-    @Column
-    private String assetType;
-
-    @Column
-    private String assetGroup;
 
     @OneToMany(mappedBy = "jpaTeacher")
     @JsonBackReference

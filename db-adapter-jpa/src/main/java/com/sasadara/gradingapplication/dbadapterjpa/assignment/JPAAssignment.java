@@ -22,10 +22,10 @@ import java.util.List;
 @AllArgsConstructor
 public class JPAAssignment implements Serializable {
 
-    private static final long serialVersionUID = -9186052289159717453L;
+    private static final long serialVersionUID = 4663944136223439771L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column
@@ -36,6 +36,5 @@ public class JPAAssignment implements Serializable {
     private List<JPAQuestion> jpaQuestions;
 
     @ManyToOne
-    @JoinColumn(name = "jpaAssignments")
     private JPAStudent jpaStudent;
 }

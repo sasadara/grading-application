@@ -1,5 +1,7 @@
 package com.sasadara.gradingapplication.entities.question;
 
+import com.sasadara.gradingapplication.entities.assignment.Assignment;
+
 public abstract class Question {
 
     protected long id;
@@ -8,6 +10,7 @@ public abstract class Question {
     protected int timeSpentMints;
     protected int numberOfAttempts;
     protected String review;
+    protected Assignment assignment;
 
     public long getId() {
         return id;
@@ -20,6 +23,12 @@ public abstract class Question {
     }
 
     public abstract void updateName(String name);
+
+    public Assignment getAssignment() {
+        return assignment;
+    }
+
+    public abstract void updateAssignment(Assignment assignment);
 
     public Results getResult() {
         return result;

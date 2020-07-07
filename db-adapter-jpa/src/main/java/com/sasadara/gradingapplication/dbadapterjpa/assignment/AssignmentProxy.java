@@ -5,8 +5,10 @@ import com.sasadara.gradingapplication.dbadapterjpa.proxy.Proxy;
 import com.sasadara.gradingapplication.dbadapterjpa.proxy.ProxyFactory;
 import com.sasadara.gradingapplication.dbadapterjpa.question.JPAQuestion;
 import com.sasadara.gradingapplication.dbadapterjpa.question.QuestionProxy;
+import com.sasadara.gradingapplication.dbadapterjpa.student.StudentProxy;
 import com.sasadara.gradingapplication.entities.assignment.Assignment;
 import com.sasadara.gradingapplication.entities.question.Question;
+import com.sasadara.gradingapplication.entities.student.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -47,6 +49,16 @@ public class AssignmentProxy extends Assignment implements Proxy<JPAAssignment> 
         return jpaAssignment.getJpaQuestions().stream()
                 .map(this::getQuestionJPAForm)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Student getStudent() {
+        return proxyFactory.create(StudentProxy.class, jpaAssignment.getJpaStudent());
+    }
+
+    @Override
+    public void updateStudent(Student student) {
+        jpaAssignment.setJpaStudent(((StudentProxy) student).getJPAObject());
     }
 
     public Question getQuestionJPAForm(JPAQuestion jpaQuestion) {

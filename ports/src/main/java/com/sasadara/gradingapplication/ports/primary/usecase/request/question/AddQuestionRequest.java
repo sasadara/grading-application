@@ -28,4 +28,6 @@ public class AddQuestionRequest implements Request {
     private String result;
 
     private int timeSpentMints;
+
+    private Long assignment;
 }
