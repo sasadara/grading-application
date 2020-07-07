@@ -20,7 +20,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class JPAQuestion implements Serializable {
 
-//    private static final long serialVersionUID = -9186052289159717453L;
+    private static final long serialVersionUID = -9186052289159717453L;
 
     @Id
     private long id;
@@ -42,5 +42,5 @@ public class JPAQuestion implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "jpaQuestions")
-    protected JPAAssignment jpaAssignment;
+    private JPAAssignment jpaAssignment;
 }

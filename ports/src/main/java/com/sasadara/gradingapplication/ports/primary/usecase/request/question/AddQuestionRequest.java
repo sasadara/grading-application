@@ -15,15 +15,17 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class AddQuestionRequest implements Request {
 
-    @NotEmpty
-    protected int numberOfAttempts;
-    protected String review;
-    @NotEmpty
+    private int numberOfAttempts;
+
+    private String review;
+
     private long id;
+
     @NotEmpty
     private String name;
+
     @NotEmpty
     private String result;
-    @NotEmpty
+
     private int timeSpentMints;
 }
