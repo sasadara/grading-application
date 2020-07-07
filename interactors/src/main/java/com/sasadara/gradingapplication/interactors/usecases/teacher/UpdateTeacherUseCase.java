@@ -4,7 +4,7 @@ package com.sasadara.gradingapplication.interactors.usecases.teacher;
 import com.sasadara.gradingapplication.entities.student.Student;
 import com.sasadara.gradingapplication.entities.teacher.Teacher;
 import com.sasadara.gradingapplication.interactors.usecases.TransactionalCommandUseCase;
-import com.sasadara.gradingapplication.ports.TransactionalRunner;
+import com.sasadara.gradingapplication.ports.secondary.datastore.TransactionalRunner;
 import com.sasadara.gradingapplication.ports.primary.usecase.exception.EntityNotFoundException;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.teacher.UpdateTeacherDetailsRequest;
 import com.sasadara.gradingapplication.ports.secondary.datastore.student.StudentGateway;

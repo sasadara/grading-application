@@ -1,7 +1,7 @@
 package com.sasadara.gradingapplication.interactors.usecases;
 
 
-import com.sasadara.gradingapplication.ports.TransactionalRunner;
+import com.sasadara.gradingapplication.ports.secondary.datastore.TransactionalRunner;
 import com.sasadara.gradingapplication.ports.primary.usecase.FunctionUseCase;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.Request;
 import com.sasadara.gradingapplication.ports.primary.usecase.response.Response;

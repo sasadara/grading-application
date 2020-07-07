@@ -4,7 +4,7 @@ package com.sasadara.gradingapplication.interactors.usecases.assignment;
 import com.sasadara.gradingapplication.entities.assignment.Assignment;
 import com.sasadara.gradingapplication.entities.question.Question;
 import com.sasadara.gradingapplication.interactors.usecases.TransactionalCommandUseCase;
-import com.sasadara.gradingapplication.ports.TransactionalRunner;
+import com.sasadara.gradingapplication.ports.secondary.datastore.TransactionalRunner;
 import com.sasadara.gradingapplication.ports.primary.usecase.exception.EntityNotFoundException;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.assignment.UpdateAssignmentRequest;
 import com.sasadara.gradingapplication.ports.secondary.datastore.assignment.AssignmentGateway;

@@ -6,5 +6,8 @@ import com.sasadara.gradingapplication.ports.primary.usecase.factory.StudentUseC
 import com.sasadara.gradingapplication.ports.primary.usecase.factory.TeacherUseCaseFactory;
 
 public interface UseCaseFactories extends
-        AssignmentUseCaseFactory, QuestionUseCaseFactory, StudentUseCaseFactory, TeacherUseCaseFactory {
+        AssignmentUseCaseFactory,
+        QuestionUseCaseFactory,
+        StudentUseCaseFactory,
+        TeacherUseCaseFactory {
 }

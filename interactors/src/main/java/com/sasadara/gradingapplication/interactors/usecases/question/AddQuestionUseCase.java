@@ -3,8 +3,8 @@ package com.sasadara.gradingapplication.interactors.usecases.question;
 
 import com.sasadara.gradingapplication.entities.question.Question;
 import com.sasadara.gradingapplication.interactors.usecases.TransactionalCommandUseCase;
-import com.sasadara.gradingapplication.ports.EntityFactory;
-import com.sasadara.gradingapplication.ports.TransactionalRunner;
+import com.sasadara.gradingapplication.ports.secondary.datastore.EntityFactory;
+import com.sasadara.gradingapplication.ports.secondary.datastore.TransactionalRunner;
 import com.sasadara.gradingapplication.ports.primary.usecase.exception.EntityAlreadyExistsException;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.question.AddQuestionRequest;
 import com.sasadara.gradingapplication.ports.secondary.datastore.question.QuestionGateway;

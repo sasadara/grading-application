@@ -8,8 +8,8 @@ import com.sasadara.gradingapplication.interactors.usecases.student.AddStudentUs
 import com.sasadara.gradingapplication.interactors.usecases.student.UpdateStudentUseCase;
 import com.sasadara.gradingapplication.interactors.usecases.teacher.AddTeacherUseCase;
 import com.sasadara.gradingapplication.interactors.usecases.teacher.UpdateTeacherUseCase;
-import com.sasadara.gradingapplication.ports.DataStore;
-import com.sasadara.gradingapplication.ports.EntityFactory;
+import com.sasadara.gradingapplication.ports.secondary.datastore.DataStore;
+import com.sasadara.gradingapplication.ports.secondary.datastore.EntityFactory;
 import com.sasadara.gradingapplication.ports.primary.usecase.CommandUseCase;
 import com.sasadara.gradingapplication.ports.primary.usecase.FunctionUseCase;
 import com.sasadara.gradingapplication.ports.primary.usecase.UseCaseFactories;
