@@ -5,11 +5,28 @@
     <parent>
         <artifactId>grading-application</artifactId>
         <groupId>com.sasadara</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>main</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.sasadara</groupId>
+            <artifactId>db-adapter-jpa</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sasadara</groupId>
+            <artifactId>restful-api-adapter-spring</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sasadara</groupId>
+            <artifactId>interactors</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+    </dependencies>
 
 </project>
