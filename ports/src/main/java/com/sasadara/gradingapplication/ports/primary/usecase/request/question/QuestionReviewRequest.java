@@ -1,4 +1,4 @@
-package com.sasadara.gradingapplication.ports.primary.usecase.request.assignment;
+package com.sasadara.gradingapplication.ports.primary.usecase.request.question;
 
 
 import com.sasadara.gradingapplication.ports.primary.usecase.request.Request;
@@ -13,10 +13,7 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateAssignmentRequest implements Request {
-
+public class QuestionReviewRequest implements Request {
     @NotEmpty
-    private long id;
-
-    private AssignmentRequest assignmentRequest;
+    private String review;
 }

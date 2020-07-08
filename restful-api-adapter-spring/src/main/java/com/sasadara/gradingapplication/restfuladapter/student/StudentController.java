@@ -4,9 +4,10 @@ import com.sasadara.gradingapplication.ports.primary.usecase.CommandUseCase;
 import com.sasadara.gradingapplication.ports.primary.usecase.FunctionUseCase;
 import com.sasadara.gradingapplication.ports.primary.usecase.factory.StudentUseCaseFactory;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.student.AddStudentDetailsRequest;
-import com.sasadara.gradingapplication.ports.primary.usecase.request.student.GetStudentDetailsRequest;
+import com.sasadara.gradingapplication.ports.primary.usecase.request.student.GetAllStudentsDetailsRequest;
+import com.sasadara.gradingapplication.ports.primary.usecase.request.student.StudentDetailsRequest;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.student.UpdateStudentDetailsRequest;
-import com.sasadara.gradingapplication.ports.primary.usecase.response.student.GetStudentDetailsResponse;
+import com.sasadara.gradingapplication.ports.primary.usecase.response.student.GetAllStudentsDetailsResponse;
 import com.sasadara.gradingapplication.restfuladapter.response.ResponseWrapper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,12 @@ public class StudentController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseWrapper<GetStudentDetailsResponse>> getStudent(@Valid @RequestParam Long studentId) {
-        LOGGER.info("Get Object request received. Student ID: {}", studentId);
-        FunctionUseCase<GetStudentDetailsRequest, GetStudentDetailsResponse> useCase
+    public ResponseEntity<ResponseWrapper<GetAllStudentsDetailsResponse>> getAllStudents(@Valid @RequestParam(required = false) Long studentId) {
+        FunctionUseCase<GetAllStudentsDetailsRequest, GetAllStudentsDetailsResponse> useCase
                 = studentUseCaseFactory.getStudentDetailsUseCase();
 
-        GetStudentDetailsRequest request = new GetStudentDetailsRequest(studentId);
-        GetStudentDetailsResponse response = useCase.execute(request);
+        GetAllStudentsDetailsRequest request = new GetAllStudentsDetailsRequest(studentId);
+        GetAllStudentsDetailsResponse response = useCase.execute(request);
 
         return new ResponseEntity<>(new ResponseWrapper<>(response), HttpStatus.OK);
     }
@@ -54,15 +54,18 @@ public class StudentController {
                 HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<ResponseWrapper<String>> updateStudent(@Valid @RequestBody UpdateStudentDetailsRequest updateStudentDetailsRequest) {
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseWrapper<String>> updateStudent(@PathVariable(name = "id") Long studentId,
+                                                                 @Valid @RequestBody StudentDetailsRequest studentDetailsRequest) {
         LOGGER.info("Student updating => Student Id: {}",
-                updateStudentDetailsRequest.getId());
+                studentId);
         CommandUseCase<UpdateStudentDetailsRequest> useCase = studentUseCaseFactory.updateStudentDetailsUseCase();
+        UpdateStudentDetailsRequest request = new UpdateStudentDetailsRequest();
+        request.setId(studentId);
+        request.setStudentDetailsRequest(studentDetailsRequest);
+        useCase.execute(request);
 
-        useCase.execute(updateStudentDetailsRequest);
-
-        return new ResponseEntity<>(new ResponseWrapper<>("Successfully added Student"),
+        return new ResponseEntity<>(new ResponseWrapper<>("Successfully Update Student"),
                 HttpStatus.CREATED);
     }
 

@@ -7,6 +7,11 @@ import java.util.List;
 public abstract class Teacher {
     protected String name;
     protected List<Student> students;
+    protected Long id;
+
+    public Long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;

@@ -8,6 +8,7 @@ import com.sasadara.gradingapplication.dbadapterjpa.proxy.ProxyFactory;
 import com.sasadara.gradingapplication.entities.assignment.Assignment;
 import com.sasadara.gradingapplication.entities.question.Question;
 import com.sasadara.gradingapplication.entities.question.Results;
+import com.sasadara.gradingapplication.ports.primary.usecase.exception.InvalidRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @AutoBindProxy(JPAQuestion.class)
@@ -78,6 +79,9 @@ public class QuestionProxy extends Question implements Proxy<JPAQuestion> {
 
     @Override
     public void updateTimeSpentMints(int timeSpentMints) {
+        if (timeSpentMints < 1) {
+            throw new InvalidRequestException("Time spend per question should be always greater than 0");
+        }
         jpaQuestion.setTimeSpentMints(timeSpentMints);
     }
 
@@ -88,6 +92,9 @@ public class QuestionProxy extends Question implements Proxy<JPAQuestion> {
 
     @Override
     public void updateNumberOfAttempts(int numberOfAttempts) {
+        if (numberOfAttempts < 1) {
+            throw new InvalidRequestException("Number of attempts should be always greater than 0");
+        }
         jpaQuestion.setNumberOfAttempts(numberOfAttempts);
     }
 

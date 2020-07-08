@@ -13,8 +13,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetTeacherDetailsResponse implements Response {
-    private Long id;
-    private String name;
-    private List<StudentForResponse> students;
+public class GetAllTeachersDetailsResponse implements Response {
+    private List<GetTeacherDetailsResponse> teachers;
 }

@@ -34,6 +34,11 @@ public class TeacherProxy extends Teacher implements Proxy<JPATeacher> {
     }
 
     @Override
+    public Long getId() {
+        return jpaTeacher.getId();
+    }
+
+    @Override
     public String getName() {
         return jpaTeacher.getName();
     }

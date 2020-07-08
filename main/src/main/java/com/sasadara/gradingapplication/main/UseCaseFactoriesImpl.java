@@ -1,30 +1,38 @@
 package com.sasadara.gradingapplication.main;
 
 import com.sasadara.gradingapplication.interactors.usecases.assignment.AddAssignmentUseCase;
+import com.sasadara.gradingapplication.interactors.usecases.assignment.GetAllAssignmentsUseCase;
 import com.sasadara.gradingapplication.interactors.usecases.assignment.UpdateAssignmentUseCase;
 import com.sasadara.gradingapplication.interactors.usecases.question.AddQuestionUseCase;
+import com.sasadara.gradingapplication.interactors.usecases.question.GetAllQuestionsUseCase;
+import com.sasadara.gradingapplication.interactors.usecases.question.UpdateQuestionReviewUseCase;
 import com.sasadara.gradingapplication.interactors.usecases.question.UpdateQuestionUseCase;
 import com.sasadara.gradingapplication.interactors.usecases.student.AddStudentUseCase;
-import com.sasadara.gradingapplication.interactors.usecases.student.GetStudentUseCase;
+import com.sasadara.gradingapplication.interactors.usecases.student.GetAllStudentsUseCase;
 import com.sasadara.gradingapplication.interactors.usecases.student.UpdateStudentUseCase;
 import com.sasadara.gradingapplication.interactors.usecases.teacher.AddTeacherUseCase;
-import com.sasadara.gradingapplication.interactors.usecases.teacher.GetTeacherUseCase;
+import com.sasadara.gradingapplication.interactors.usecases.teacher.GetAllTeachersUseCase;
 import com.sasadara.gradingapplication.interactors.usecases.teacher.UpdateTeacherUseCase;
 import com.sasadara.gradingapplication.ports.primary.usecase.CommandUseCase;
 import com.sasadara.gradingapplication.ports.primary.usecase.FunctionUseCase;
 import com.sasadara.gradingapplication.ports.primary.usecase.UseCaseFactories;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.assignment.AddAssignmentRequest;
+import com.sasadara.gradingapplication.ports.primary.usecase.request.assignment.GetAllAssignmentsRequest;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.assignment.UpdateAssignmentRequest;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.question.AddQuestionRequest;
+import com.sasadara.gradingapplication.ports.primary.usecase.request.question.GetAllQuestionsRequest;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.question.UpdateQuestionRequest;
+import com.sasadara.gradingapplication.ports.primary.usecase.request.question.UpdateQuestionReviewRequest;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.student.AddStudentDetailsRequest;
-import com.sasadara.gradingapplication.ports.primary.usecase.request.student.GetStudentDetailsRequest;
+import com.sasadara.gradingapplication.ports.primary.usecase.request.student.GetAllStudentsDetailsRequest;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.student.UpdateStudentDetailsRequest;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.teacher.AddTeacherDetailsRequest;
-import com.sasadara.gradingapplication.ports.primary.usecase.request.teacher.GetTeacherDetailsRequest;
+import com.sasadara.gradingapplication.ports.primary.usecase.request.teacher.GetAllTeachersDetailsRequest;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.teacher.UpdateTeacherDetailsRequest;
-import com.sasadara.gradingapplication.ports.primary.usecase.response.student.GetStudentDetailsResponse;
-import com.sasadara.gradingapplication.ports.primary.usecase.response.teacher.GetTeacherDetailsResponse;
+import com.sasadara.gradingapplication.ports.primary.usecase.response.assignment.GetAllAssignmentsResponse;
+import com.sasadara.gradingapplication.ports.primary.usecase.response.question.GetAllQuestionsResponse;
+import com.sasadara.gradingapplication.ports.primary.usecase.response.student.GetAllStudentsDetailsResponse;
+import com.sasadara.gradingapplication.ports.primary.usecase.response.teacher.GetAllTeachersDetailsResponse;
 import com.sasadara.gradingapplication.ports.secondary.datastore.DataStore;
 import com.sasadara.gradingapplication.ports.secondary.datastore.EntityFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +54,13 @@ public class UseCaseFactoriesImpl implements UseCaseFactories {
 
     @Override
     public CommandUseCase<UpdateAssignmentRequest> updateAssignmentUseCase() {
-        return new UpdateAssignmentUseCase(dataStore.assignmentGateway(), dataStore.questionGateway(),
+        return new UpdateAssignmentUseCase(dataStore.assignmentGateway(), dataStore.studentGateway(),
                 dataStore.transactionalRunner());
+    }
+
+    @Override
+    public FunctionUseCase<GetAllAssignmentsRequest, GetAllAssignmentsResponse> getAllAssignmentsUseCase() {
+        return new GetAllAssignmentsUseCase(dataStore.assignmentGateway(), dataStore.transactionalRunner());
     }
 
     @Override
@@ -58,7 +71,17 @@ public class UseCaseFactoriesImpl implements UseCaseFactories {
 
     @Override
     public CommandUseCase<UpdateQuestionRequest> updateQuestionUseCase() {
-        return new UpdateQuestionUseCase(dataStore.questionGateway(), dataStore.transactionalRunner());
+        return new UpdateQuestionUseCase(dataStore.questionGateway(), dataStore.assignmentGateway(), dataStore.transactionalRunner());
+    }
+
+    @Override
+    public CommandUseCase<UpdateQuestionReviewRequest> updateQuestionReviewUseCase() {
+        return new UpdateQuestionReviewUseCase(dataStore.questionGateway(), dataStore.transactionalRunner());
+    }
+
+    @Override
+    public FunctionUseCase<GetAllQuestionsRequest, GetAllQuestionsResponse> getAllQuestionsUseCase() {
+        return new GetAllQuestionsUseCase(dataStore.questionGateway(), dataStore.transactionalRunner());
     }
 
     @Override
@@ -75,7 +98,7 @@ public class UseCaseFactoriesImpl implements UseCaseFactories {
 
     @Override
     public CommandUseCase<UpdateStudentDetailsRequest> updateStudentDetailsUseCase() {
-        return new UpdateStudentUseCase(dataStore.assignmentGateway(), dataStore.studentGateway(),
+        return new UpdateStudentUseCase(dataStore.studentGateway(), dataStore.teacherGateway(),
                 dataStore.transactionalRunner());
     }
 
@@ -87,18 +110,18 @@ public class UseCaseFactoriesImpl implements UseCaseFactories {
 
     @Override
     public CommandUseCase<UpdateTeacherDetailsRequest> updateTeacherDetailsUseCase() {
-        return new UpdateTeacherUseCase(dataStore.teacherGateway(), dataStore.studentGateway(),
+        return new UpdateTeacherUseCase(dataStore.teacherGateway(),
                 dataStore.transactionalRunner());
     }
 
     @Override
-    public FunctionUseCase<GetTeacherDetailsRequest, GetTeacherDetailsResponse> getTeacherDetailsUseCase() {
-        return new GetTeacherUseCase(dataStore.teacherGateway(), dataStore.transactionalRunner());
+    public FunctionUseCase<GetAllTeachersDetailsRequest, GetAllTeachersDetailsResponse> getTeacherDetailsUseCase() {
+        return new GetAllTeachersUseCase(dataStore.teacherGateway(), dataStore.transactionalRunner());
     }
 
     @Override
-    public FunctionUseCase<GetStudentDetailsRequest, GetStudentDetailsResponse> getStudentDetailsUseCase() {
-        return new GetStudentUseCase(dataStore.studentGateway(), dataStore.transactionalRunner());
+    public FunctionUseCase<GetAllStudentsDetailsRequest, GetAllStudentsDetailsResponse> getStudentDetailsUseCase() {
+        return new GetAllStudentsUseCase(dataStore.studentGateway(), dataStore.transactionalRunner());
     }
 
 

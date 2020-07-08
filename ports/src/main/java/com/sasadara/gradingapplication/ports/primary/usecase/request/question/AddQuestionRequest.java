@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -19,7 +20,8 @@ public class AddQuestionRequest implements Request {
 
     private String review;
 
-    private long id;
+    @NotNull
+    private Long id;
 
     @NotEmpty
     private String name;

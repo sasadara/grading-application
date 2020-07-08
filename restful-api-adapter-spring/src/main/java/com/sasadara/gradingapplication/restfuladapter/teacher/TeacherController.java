@@ -4,9 +4,10 @@ import com.sasadara.gradingapplication.ports.primary.usecase.CommandUseCase;
 import com.sasadara.gradingapplication.ports.primary.usecase.FunctionUseCase;
 import com.sasadara.gradingapplication.ports.primary.usecase.factory.TeacherUseCaseFactory;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.teacher.AddTeacherDetailsRequest;
-import com.sasadara.gradingapplication.ports.primary.usecase.request.teacher.GetTeacherDetailsRequest;
+import com.sasadara.gradingapplication.ports.primary.usecase.request.teacher.GetAllTeachersDetailsRequest;
+import com.sasadara.gradingapplication.ports.primary.usecase.request.teacher.TeacherDetailsRequest;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.teacher.UpdateTeacherDetailsRequest;
-import com.sasadara.gradingapplication.ports.primary.usecase.response.teacher.GetTeacherDetailsResponse;
+import com.sasadara.gradingapplication.ports.primary.usecase.response.teacher.GetAllTeachersDetailsResponse;
 import com.sasadara.gradingapplication.restfuladapter.response.ResponseWrapper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,12 @@ public class TeacherController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseWrapper<GetTeacherDetailsResponse>> getTeacher(@Valid @RequestParam Long teacherId) {
-        LOGGER.info("Get Object request received. Student ID: {}", teacherId);
-        FunctionUseCase<GetTeacherDetailsRequest, GetTeacherDetailsResponse> useCase
+    public ResponseEntity<ResponseWrapper<GetAllTeachersDetailsResponse>> getAllTeachers(@Valid @RequestParam(required = false) Long teacherId) {
+        FunctionUseCase<GetAllTeachersDetailsRequest, GetAllTeachersDetailsResponse> useCase
                 = teacherUseCaseFactory.getTeacherDetailsUseCase();
 
-        GetTeacherDetailsRequest request = new GetTeacherDetailsRequest(teacherId);
-        GetTeacherDetailsResponse response = useCase.execute(request);
+        GetAllTeachersDetailsRequest request = new GetAllTeachersDetailsRequest(teacherId);
+        GetAllTeachersDetailsResponse response = useCase.execute(request);
 
         return new ResponseEntity<>(new ResponseWrapper<>(response), HttpStatus.OK);
     }
@@ -54,13 +54,16 @@ public class TeacherController {
                 HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<ResponseWrapper<String>> updateTeacher(@Valid @RequestBody UpdateTeacherDetailsRequest updateTeacherDetailsRequest) {
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseWrapper<String>> updateTeacher(@PathVariable(name = "id") Long teacherId,
+                                                                 @Valid @RequestBody TeacherDetailsRequest teacherDetailsRequest) {
         LOGGER.info("Teacher adding => Teacher Id: {}",
-                updateTeacherDetailsRequest.getId());
+                teacherId);
         CommandUseCase<UpdateTeacherDetailsRequest> useCase = teacherUseCaseFactory.updateTeacherDetailsUseCase();
-
-        useCase.execute(updateTeacherDetailsRequest);
+        UpdateTeacherDetailsRequest request = new UpdateTeacherDetailsRequest();
+        request.setId(teacherId);
+        request.setTeacherDetailsRequest(teacherDetailsRequest);
+        useCase.execute(request);
 
         return new ResponseEntity<>(new ResponseWrapper<>("Successfully Update Teacher"),
                 HttpStatus.CREATED);

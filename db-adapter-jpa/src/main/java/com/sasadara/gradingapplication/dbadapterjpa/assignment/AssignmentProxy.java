@@ -35,6 +35,11 @@ public class AssignmentProxy extends Assignment implements Proxy<JPAAssignment> 
     }
 
     @Override
+    public Long getId() {
+        return jpaAssignment.getId();
+    }
+
+    @Override
     public String getName() {
         return jpaAssignment.getName();
     }

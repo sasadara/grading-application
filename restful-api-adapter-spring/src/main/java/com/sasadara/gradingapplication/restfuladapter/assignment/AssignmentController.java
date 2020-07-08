@@ -1,9 +1,13 @@
 package com.sasadara.gradingapplication.restfuladapter.assignment;
 
 import com.sasadara.gradingapplication.ports.primary.usecase.CommandUseCase;
+import com.sasadara.gradingapplication.ports.primary.usecase.FunctionUseCase;
 import com.sasadara.gradingapplication.ports.primary.usecase.factory.AssignmentUseCaseFactory;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.assignment.AddAssignmentRequest;
+import com.sasadara.gradingapplication.ports.primary.usecase.request.assignment.AssignmentRequest;
+import com.sasadara.gradingapplication.ports.primary.usecase.request.assignment.GetAllAssignmentsRequest;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.assignment.UpdateAssignmentRequest;
+import com.sasadara.gradingapplication.ports.primary.usecase.response.assignment.GetAllAssignmentsResponse;
 import com.sasadara.gradingapplication.restfuladapter.response.ResponseWrapper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,18 @@ public class AssignmentController {
         this.assignmentUseCaseFactory = assignmentUseCaseFactory;
     }
 
+    @GetMapping
+    public ResponseEntity<ResponseWrapper<GetAllAssignmentsResponse>> getAllAssignments(@Valid @RequestParam(required = false) Long assignmentId) {
+
+        FunctionUseCase<GetAllAssignmentsRequest, GetAllAssignmentsResponse> useCase
+                = assignmentUseCaseFactory.getAllAssignmentsUseCase();
+
+        GetAllAssignmentsRequest request = new GetAllAssignmentsRequest(assignmentId);
+        GetAllAssignmentsResponse response = useCase.execute(request);
+
+        return new ResponseEntity<>(new ResponseWrapper<>(response), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<ResponseWrapper<String>> addAssignment(@Valid @RequestBody AddAssignmentRequest addAssignmentRequest) {
         LOGGER.info("Assignment adding => Assignment name: {}",
@@ -39,13 +55,16 @@ public class AssignmentController {
                 HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<ResponseWrapper<String>> updateAssignment(@Valid @RequestBody UpdateAssignmentRequest updateAssignmentRequest) {
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseWrapper<String>> updateAssignment(@PathVariable(name = "id") Long assignmentId,
+                                                                    @Valid @RequestBody AssignmentRequest assignmentRequest) {
         LOGGER.info("Assignment updating => Assignment id: {}",
-                updateAssignmentRequest.getId());
+                assignmentId);
         CommandUseCase<UpdateAssignmentRequest> useCase = assignmentUseCaseFactory.updateAssignmentUseCase();
-
-        useCase.execute(updateAssignmentRequest);
+        UpdateAssignmentRequest request = new UpdateAssignmentRequest();
+        request.setId(assignmentId);
+        request.setAssignmentRequest(assignmentRequest);
+        useCase.execute(request);
 
         return new ResponseEntity<>(new ResponseWrapper<>("Successfully update Assignment"),
                 HttpStatus.CREATED);

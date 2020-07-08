@@ -1,4 +1,4 @@
-package com.sasadara.gradingapplication.ports.primary.usecase.request.assignment;
+package com.sasadara.gradingapplication.ports.primary.usecase.request.question;
 
 
 import com.sasadara.gradingapplication.ports.primary.usecase.request.Request;
@@ -8,15 +8,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateAssignmentRequest implements Request {
+public class UpdateQuestionReviewRequest implements Request {
+
+    @NotNull
+    private Long id;
 
     @NotEmpty
-    private long id;
-
-    private AssignmentRequest assignmentRequest;
+    private QuestionReviewRequest reviewRequest;
 }

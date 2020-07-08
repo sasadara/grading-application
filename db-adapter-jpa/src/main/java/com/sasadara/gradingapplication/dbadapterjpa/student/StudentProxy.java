@@ -38,6 +38,12 @@ public class StudentProxy extends Student implements Proxy<JPAStudent> {
         return jpaStudent;
     }
 
+
+    @Override
+    public Long getId() {
+        return jpaStudent.getId();
+    }
+
     @Override
     public String getName() {
         return jpaStudent.getName();
@@ -79,18 +85,19 @@ public class StudentProxy extends Student implements Proxy<JPAStudent> {
     }
 
     @Override
-    public double getAvgTime() {
+    public double getAvgPerAssignmentTime() {
         List<JPAAssignment> jpaAssignments = jpaStudent.getJpaAssignments();
-        double totalTimeSpent = 0;
+        double totalAverageTimePerQues = 0;
         double numberOfQuestions = 0;
         for (JPAAssignment jpaAssignment : jpaAssignments) {
             for (JPAQuestion question : jpaAssignment.getJpaQuestions()) {
-                totalTimeSpent = question.getTimeSpentMints() + totalTimeSpent;
+                double averageTimePerQuestion = question.getTimeSpentMints() / (double) question.getNumberOfAttempts();
+                totalAverageTimePerQues = (averageTimePerQuestion) + totalAverageTimePerQues;
                 numberOfQuestions++;
             }
         }
         if (numberOfQuestions > 0) {
-            return totalTimeSpent / numberOfQuestions;
+            return totalAverageTimePerQues / numberOfQuestions;
         } else {
             return 0;
         }

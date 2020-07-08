@@ -1,26 +1,24 @@
 package com.sasadara.gradingapplication.interactors.usecases.student;
 
 
-import com.sasadara.gradingapplication.entities.assignment.Assignment;
 import com.sasadara.gradingapplication.entities.student.Student;
+import com.sasadara.gradingapplication.entities.teacher.Teacher;
 import com.sasadara.gradingapplication.interactors.usecases.TransactionalCommandUseCase;
-import com.sasadara.gradingapplication.ports.secondary.datastore.TransactionalRunner;
 import com.sasadara.gradingapplication.ports.primary.usecase.exception.EntityNotFoundException;
+import com.sasadara.gradingapplication.ports.primary.usecase.request.student.StudentDetailsRequest;
 import com.sasadara.gradingapplication.ports.primary.usecase.request.student.UpdateStudentDetailsRequest;
-import com.sasadara.gradingapplication.ports.secondary.datastore.assignment.AssignmentGateway;
+import com.sasadara.gradingapplication.ports.secondary.datastore.TransactionalRunner;
 import com.sasadara.gradingapplication.ports.secondary.datastore.student.StudentGateway;
-
-import java.util.LinkedList;
-import java.util.List;
+import com.sasadara.gradingapplication.ports.secondary.datastore.teacher.TeacherGateway;
 
 public class UpdateStudentUseCase extends TransactionalCommandUseCase<UpdateStudentDetailsRequest> {
-    private AssignmentGateway assignmentGateway;
+    private TeacherGateway teacherGateway;
     private StudentGateway studentGateway;
 
-    public UpdateStudentUseCase(AssignmentGateway assignmentGateway, StudentGateway studentGateway,
+    public UpdateStudentUseCase(StudentGateway studentGateway, TeacherGateway teacherGateway,
                                 TransactionalRunner transactionalRunner) {
         super(transactionalRunner);
-        this.assignmentGateway = assignmentGateway;
+        this.teacherGateway = teacherGateway;
         this.studentGateway = studentGateway;
     }
 
@@ -32,14 +30,15 @@ public class UpdateStudentUseCase extends TransactionalCommandUseCase<UpdateStud
         } else {
             throw new EntityNotFoundException(String.format("Student No : %s is not exist", request.getId()));
         }
-        List<Assignment> assignments = new LinkedList<>();
-        for (Long id : request.getAssignments()) {
-            if (assignmentGateway.findById(id).isPresent()) {
-                assignments.add(assignmentGateway.findById(id).get());
+        if (request.getStudentDetailsRequest() != null) {
+            StudentDetailsRequest studentDetailsRequest = request.getStudentDetailsRequest();
+            if (studentDetailsRequest.getName() != null) {
+                student.updateName(studentDetailsRequest.getName());
+            }
+            if (studentDetailsRequest.getTeacherId() != null && teacherGateway.findById(studentDetailsRequest.getTeacherId()).isPresent()) {
+                Teacher teacher = teacherGateway.findById(studentDetailsRequest.getTeacherId()).get();
+                student.updateTeacher(teacher);
             }
         }
-        student.updateAssignments(assignments);
-        studentGateway.addNew(student);
-
     }
 }

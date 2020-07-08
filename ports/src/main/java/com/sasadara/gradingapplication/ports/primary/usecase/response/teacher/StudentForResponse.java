@@ -11,7 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class StudentForResponse {
     private String name;
-    private String teacher;
     private double avgTime;
     private double correctAnswers;
     private double incorrectAnswers;

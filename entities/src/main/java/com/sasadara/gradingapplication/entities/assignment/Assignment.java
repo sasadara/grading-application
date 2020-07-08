@@ -10,6 +10,11 @@ public abstract class Assignment {
     protected String name;
     protected List<Question> questions;
     protected Student student;
+    protected Long id;
+
+    public Long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;

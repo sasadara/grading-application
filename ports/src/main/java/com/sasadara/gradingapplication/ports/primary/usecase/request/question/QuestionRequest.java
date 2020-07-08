@@ -7,16 +7,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateQuestionRequest implements Request {
+public class QuestionRequest implements Request {
 
-    @NotNull
-    private Long id;
+    private Integer numberOfAttempts;
 
-    private QuestionRequest question;
+    private String name;
+
+    private Integer timeSpentMints;
+
+    private Long assignmentId;
 }

@@ -1,5 +1,4 @@
-package com.sasadara.gradingapplication.ports.primary.usecase.response.teacher;
-
+package com.sasadara.gradingapplication.ports.primary.usecase.response.question;
 
 import com.sasadara.gradingapplication.ports.primary.usecase.response.Response;
 import lombok.AllArgsConstructor;
@@ -13,8 +12,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetTeacherDetailsResponse implements Response {
-    private Long id;
-    private String name;
-    private List<StudentForResponse> students;
+public class GetAllQuestionsResponse implements Response {
+    List<QuestionForResponse> questions;
 }

@@ -11,6 +11,11 @@ public abstract class Student {
     protected String name;
     protected List<Assignment> assignments;
     protected Teacher teacher;
+    protected Long id;
+
+    public Long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -30,7 +35,7 @@ public abstract class Student {
 
     public abstract void updateAssignments(List<Assignment> assignments);
 
-    public abstract double getAvgTime();
+    public abstract double getAvgPerAssignmentTime();
 
     public abstract Map<String, Double> getCorrectIncorrectAnswers();
 

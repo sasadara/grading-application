@@ -6,16 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateStudentDetailsRequest implements Request {
+public class StudentDetailsRequest implements Request {
+    private String name;
 
-    @NotNull
-    private Long id;
-
-    private StudentDetailsRequest studentDetailsRequest;
+    private Long teacherId;
 }
