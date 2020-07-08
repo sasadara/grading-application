@@ -14,5 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AssignmentForResponse implements Response {
+    private Long id;
+    private String name;
     private List<QuestionForResponse> questions;
 }
