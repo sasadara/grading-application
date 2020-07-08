@@ -48,6 +48,8 @@ public class GetAllAssignmentsUseCase extends TransactionalFunctionUseCase<GetAl
         AssignmentForResponse assignmentForResponse = new AssignmentForResponse();
         List<QuestionForResponse> questionForResponse = assignment.getQuestions().stream()
                 .map(GetAllQuestionsUseCase::convertQuestion).collect(Collectors.toList());
+        assignmentForResponse.setId(assignment.getId());
+        assignmentForResponse.setName(assignment.getName());
         assignmentForResponse.setQuestions(questionForResponse);
         return assignmentForResponse;
     }
